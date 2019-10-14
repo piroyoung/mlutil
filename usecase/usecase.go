@@ -1,11 +1,3 @@
-# mlutil
-
-My personal ml utils
-
-
-# modules 
-## Feature Hashing
-```go
 package main
 
 import (
@@ -33,5 +25,3 @@ func main() {
 		panic(err)
 	}
 }
-
-```
