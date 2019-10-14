@@ -6,37 +6,37 @@ import "gonum.org/v1/gonum/mat"
 
 type SparseVector struct {
 	Values map[uint32]float32
-	Length uint32
+	N      uint32
 }
 
 func (v *SparseVector) GetDense() *mat.VecDense {
-	d := make([]float64, v.Length)
+	d := make([]float64, v.N)
 	for i, v := range v.Values {
 		d[i] = float64(v)
 	}
-	return mat.NewVecDense(int(v.Length), d)
+	return mat.NewVecDense(int(v.N), d)
 }
 
 func (v *SparseVector) AsMatrix() SparseMatrix {
 	return SparseMatrix{
-		Values:    map[uint32]map[uint32]float32{0: v.Values},
-		RowLength: 1,
-		ColLength: v.Length,
+		Values: map[uint32]map[uint32]float32{0: v.Values},
+		N:      1,
+		M:      v.N,
 	}
 }
 
 type SparseMatrix struct {
-	Values    map[uint32]map[uint32]float32
-	RowLength uint32
-	ColLength uint32
+	Values map[uint32]map[uint32]float32
+	N      uint32
+	M      uint32
 }
 
 func (m *SparseMatrix) GetDense() *mat.Dense {
-	d := make([]float64, m.RowLength*m.ColLength)
+	d := make([]float64, m.N*m.M)
 	for i, row := range m.Values {
 		for j, v := range row {
-			d[i*m.RowLength+j] = float64(v)
+			d[i*m.M+j] = float64(v)
 		}
 	}
-	return mat.NewDense(int(m.RowLength), int(m.ColLength), d)
+	return mat.NewDense(int(m.N), int(m.M), d)
 }
