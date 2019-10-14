@@ -1,16 +1,18 @@
 package linalg
 
+import "gonum.org/v1/gonum/mat"
+
 type SparseVector struct {
 	Values map[uint32]float32
 	Length uint32
 }
 
-func (v *SparseVector) GetDense() DenseVector {
-	d := make([]float32, v.Length)
+func (v *SparseVector) GetDense() *mat.VecDense {
+	d := make([]float64, v.Length)
 	for i, v := range v.Values {
-		d[i] = v
+		d[i] = float64(v)
 	}
-	return d
+	return mat.NewVecDense(int(v.Length), d)
 }
 
 func (v *SparseVector) AsMatrix() SparseMatrix {
@@ -21,18 +23,28 @@ func (v *SparseVector) AsMatrix() SparseMatrix {
 	}
 }
 
+func (v *SparseVector) InnerProduct(u SparseVector) float32 {
+	var result float32
+	for i, vi := range v.Values {
+		if ui, ok := u.Values[i]; ok {
+			result += vi * ui
+		}
+	}
+	return result
+}
+
 type SparseMatrix struct {
 	Values    map[uint32]map[uint32]float32
 	RowLength uint32
 	ColLength uint32
 }
 
-func (m *SparseMatrix) GetDense() DenseMatrix {
-	d := make([][]float32, m.RowLength, m.ColLength)
+func (m *SparseMatrix) GetDense() *mat.Dense {
+	d := make([]float64, m.RowLength*m.ColLength)
 	for i, row := range m.Values {
-		for j, value := range row {
-			d[i][j] = value
+		for j, v := range row {
+			d[i*m.RowLength + j] = float64(v)
 		}
 	}
-	return d
+	return mat.NewDense(int(m.RowLength), int(m.ColLength), d)
 }

@@ -16,11 +16,11 @@ func TestCrc32FeatureHasher_GetHashedFeature(t *testing.T) {
 
 func TestCrc32FeatureHasher_GetSparseVector(t *testing.T) {
 	h := NewCRC32FeatureHasher(32)
-	features := []string{"apple", "orange", "banana", "pine", "hoge", "aaaaaaa"}
+	features := []string{"apple", "orange", "banana", "pine",}
 	vec, err := h.GetSparseVector(features)
 	if err != nil {
 		t.Error()
 	}
-	t.Log(vec)
-	t.Log(vec.GetDense())
+	m := vec.AsMatrix()
+	t.Log(m.GetDense())
 }
