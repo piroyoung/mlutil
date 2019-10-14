@@ -2,7 +2,7 @@ package hasher
 
 import (
 	"encoding/binary"
-	"github.com/piroyoung/scigo/linalg"
+	"github.com/piroyoung/mlutil/linalg"
 	"hash/crc32"
 )
 
