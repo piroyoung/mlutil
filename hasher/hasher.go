@@ -57,7 +57,7 @@ func (h *crc32FeatureHasher) GetSparseVector(features []string) (linalg.SparseVe
 	}
 	return linalg.SparseVector{
 		Values: values,
-		Length: h.modular,
+		N:      h.modular,
 	}, nil
 }
 
@@ -71,8 +71,8 @@ func (h *crc32FeatureHasher) GetSparseMatrix(features [][]string) (linalg.Sparse
 		}
 	}
 	return linalg.SparseMatrix{
-		Values:    values,
-		RowLength: uint32(len(features)),
-		ColLength: h.modular,
+		Values: values,
+		N:      uint32(len(features)),
+		M:      h.modular,
 	}, nil
 }
