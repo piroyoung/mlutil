@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/piroyoung/hasher/hasher"
+	"github.com/piroyoung/mlutil/hasher"
 )
 
 func main() {

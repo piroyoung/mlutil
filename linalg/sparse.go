@@ -2,6 +2,8 @@ package linalg
 
 import "gonum.org/v1/gonum/mat"
 
+// Adapter implementations for gonum dense
+
 type SparseVector struct {
 	Values map[uint32]float32
 	Length uint32
@@ -23,16 +25,6 @@ func (v *SparseVector) AsMatrix() SparseMatrix {
 	}
 }
 
-func (v *SparseVector) InnerProduct(u SparseVector) float32 {
-	var result float32
-	for i, vi := range v.Values {
-		if ui, ok := u.Values[i]; ok {
-			result += vi * ui
-		}
-	}
-	return result
-}
-
 type SparseMatrix struct {
 	Values    map[uint32]map[uint32]float32
 	RowLength uint32
@@ -43,7 +35,7 @@ func (m *SparseMatrix) GetDense() *mat.Dense {
 	d := make([]float64, m.RowLength*m.ColLength)
 	for i, row := range m.Values {
 		for j, v := range row {
-			d[i*m.RowLength + j] = float64(v)
+			d[i*m.RowLength+j] = float64(v)
 		}
 	}
 	return mat.NewDense(int(m.RowLength), int(m.ColLength), d)
